@@ -1,5 +1,7 @@
 package com.modeling.orders.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,11 +26,13 @@ public class Order {
     //Customer
     @ManyToOne
     @JoinColumn(name = "custcode", nullable = false) //This tells it to use custcode to join the tables
-    private Customer custcode; //This connects to mappedBy = "customer" in Customer.java
+    @JsonIgnoreProperties(value = "orders", allowSetters = true)
+    private Customer custcode; //This connects to mappedBy = "custcode" in Customer.java
 
     //Payment
     @ManyToMany
     @JoinTable(name = "orderspayments", joinColumns = @JoinColumn(name = "ordnum"), inverseJoinColumns = @JoinColumn(name = "paymentid"))
+    @JsonIgnoreProperties(value = "orders", allowSetters = true)
     private Set<Payment> payments = new HashSet<>();
 
     ///////////////////
@@ -47,6 +51,7 @@ public class Order {
     /////////////////////////
     //  Getters & Setters  //
     /////////////////////////
+
     public long getOrdnum() {
         return ordnum;
     }
@@ -71,20 +76,20 @@ public class Order {
         this.advanceamount = advanceamount;
     }
 
-    public Customer getCustcode() {
-        return custcode;
-    }
-
-    public void setCustcode(Customer custcode) {
-        this.custcode = custcode;
-    }
-
     public String getOrderdescription() {
         return orderdescription;
     }
 
     public void setOrderdescription(String orderdescription) {
         this.orderdescription = orderdescription;
+    }
+
+    public Customer getCustcode() {
+        return custcode;
+    }
+
+    public void setCustcode(Customer custcode) {
+        this.custcode = custcode;
     }
 
     public Set<Payment> getPayments() {
@@ -95,7 +100,11 @@ public class Order {
         this.payments = payments;
     }
 
-    public Payment addPayments(Payment pay){
-        return pay;
+    ///////////////
+    //  Methods  //
+    ///////////////
+
+    public void addPayments(Payment pay){
+        this.payments.add(pay);
     }
 }

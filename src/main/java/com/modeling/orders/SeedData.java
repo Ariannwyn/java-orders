@@ -1,6 +1,5 @@
 package com.modeling.orders;
 
-
 import com.modeling.orders.models.Agent;
 import com.modeling.orders.models.Customer;
 import com.modeling.orders.models.Order;
@@ -9,6 +8,10 @@ import com.modeling.orders.repositories.AgentRepository;
 import com.modeling.orders.repositories.CustomerRepository;
 import com.modeling.orders.repositories.OrderRepository;
 import com.modeling.orders.repositories.PaymentRepository;
+import com.modeling.orders.services.AgentServices;
+import com.modeling.orders.services.CustomerServices;
+import com.modeling.orders.services.OrderServices;
+import com.modeling.orders.services.PaymentServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -48,6 +51,17 @@ public class SeedData implements CommandLineRunner
     @Autowired
     private PaymentRepository paymentrepos;
 
+    @Autowired
+    private CustomerServices customerServices;
+
+    @Autowired
+    private PaymentServices paymentServices;
+
+    @Autowired
+    private AgentServices agentServices;
+
+    @Autowired
+    private OrderServices orderServices;
     /**
      * Generates test, seed data for our application
      * First a set of known data is seeded into our database.
@@ -61,6 +75,12 @@ public class SeedData implements CommandLineRunner
     @Override
     public void run(String[] args) throws Exception
     {
+
+        customerServices.deleteAllCustomers();
+        paymentServices.deleteAllPayments();
+        agentServices.deleteAllAgents();
+        orderServices.deleteAllOrders();
+
         Payment pay1 = new Payment("Cash");
         Payment pay2 = new Payment("Gift Card");
         Payment pay3 = new Payment("Credit Card");

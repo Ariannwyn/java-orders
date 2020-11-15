@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-@Service(value = "paymentservice")
+@Service(value = "paymentServices")
 public class PaymentServicesImpl implements PaymentServices{
     @Autowired
     PaymentRepository payrepos;
@@ -16,5 +16,11 @@ public class PaymentServicesImpl implements PaymentServices{
     @Override
     public Payment save(Payment payment) {
         return payrepos.save(payment);
+    }
+
+    @Transactional
+    @Override
+    public void deleteAllPayments(){
+        payrepos.deleteAll();
     }
 }
